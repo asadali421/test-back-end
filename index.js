@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require('path');
 const app = express();
 var bodyParser = require('body-parser');
 const User = require('./models/User.js');
@@ -19,6 +20,12 @@ mongoose.connect(url,{useNewUrlParser:true}).then(db=>{
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+a = path.resolve(__dirname, '..');
+app.use(express.static(path.join(a,'test-front-end/build')));
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
